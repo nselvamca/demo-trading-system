@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Demo Trading System API
+  description: Order placement API for a simulated trading workflow.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8081/orderservice
+    description: Local Order Service
+
+paths:
+  /orders/placeorder:
+    post:
+      summary: Place a new order
+      description: Accepts an order request and publishes it to Kafka. The result is stored in DynamoDB.
+      parameters:
+        - name: user-id
+          in: header
+          required: true
+          schema:
+            type: string
+          description: User ID placing the order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+              examples:
+                success:
+                  summary: Sample Success Response
+                  value:
+                    status: Success
+                    orderId: f9a14f9f-cbee-4cea-9d60-21377efb5ff5
+                    timestamp: 2025-03-30T09:37:25.206841600Z
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              examples:
+                invalidInput:
+                  summary: Example of validation error
+                  value:
+                    errorCode: INVALID_INPUT
+                    message: Quantity must be greater than zero
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              examples:
+                serverError:
+                  summary: Sample error response
+                  value:
+                    errorCode: SYSTEM_ERROR
+                    message: Something went wrong. Please try again later.
+
+components:
+  schemas:
+    OrderRequest:
+      type: object
+      required:
+        - product
+        - quantity
+        - price
+        - tradingsymbol
+        - exchange
+        - transaction_type
+        - order_type
+      properties:
+        product:
+          type: string
+          example: MIS
+          description: Product type (required)
+        quantity:
+          type: integer
+          minimum: 1
+          example: 10
+          description: Quantity must be greater than 0
+        price:
+          type: number
+          format: double
+          minimum: 0.0
+          example: 77.5
+          description: Price cannot be negative
+        tradingsymbol:
+          type: string
+          example: INFY
+          description: Trading symbol of the instrument
+        exchange:
+          type: string
+          enum: [NSE, BSE, NFO]
+          example: NFO
+          description: Must be NSE, BSE, or NFO
+        validity:
+          type: string
+          enum: [DAY, IOC]
+          example: DAY
+          description: Optional – Validity of the order
+        transaction_type:
+          type: string
+          enum: [BUY, SELL]
+          example: BUY
+          description: Must be BUY or SELL
+        order_type:
+          type: string
+          enum: [MARKET, LIMIT]
+          example: LIMIT
+          description: Must be MARKET or LIMIT
+
+    OrderResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        orderId:
+          type: string
+          format: uuid
+          example: f9a14f9f-cbee-4cea-9d60-21377efb5ff5
+        timestamp:
+          type: string
+          format: date-time
+          example: 2025-03-30T09:37:25.206841600Z
