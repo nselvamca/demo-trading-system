@@ -1,0 +1,20 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: ordersubcription
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: order-event-consumer-group
+      auto-offset-reset: latest
+      enable-auto-commit: true
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: com.demo.trading.common.model.events.OrderEvent
+    listener:
+      missing-topics-fatal: false
+      idle-event-interval: 5000
