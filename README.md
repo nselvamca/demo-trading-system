@@ -34,31 +34,31 @@ To simulate an end-to-end order trading workflow using microservices event-drive
 ## Architecture Overview
 
 ```text
-+------------------------+
-|     API (REST)        |
-+-----------+------------+
+=========================
+     API (REST)        
+=========================
             |
             v
-+------------------------+
-| Order Service          |
-| - Receives orders      |
-| - Validates request    |
-| - Publishes to Kafka   |
-| - Save DB :order Status|
-+-----------+------------+
+==========================
+  Order Service          
+  - Receives orders      
+  - Validates request    
+  - Publishes to Kafka   
+  - Save DB :order Status
+==========================
             |
             v
-+-----------------------------+
-| Kafka Topic: order-events   |
-+-----------+-----------------+
+==========================
+ Kafka Topic: order-events   
+==========================
             |
             v
-+----------------------------+
-| Order Subscriber           |
-| - Listens to events        |
-| - Calls Exchange (stub)    |
-| - Save DB :order Status    |
-+----------------------------+
+==============================
+  Order Subscriber            
+  - Listens to events         
+  - Calls Exchange (stub)     
+  - Save DB :order Status    
+==============================
 ```
 
 ---
