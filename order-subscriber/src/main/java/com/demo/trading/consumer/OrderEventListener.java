@@ -26,7 +26,6 @@ public class OrderEventListener {
     }
 
     @KafkaListener(topics = ORDER_EVENT_TOPIC, groupId = ORDER_EVENT_CONSUMER_GROUP)
-
     public void listen(OrderEvent event) {
         Optional.ofNullable(event)
                 .map(OrderEvent::getOrderId)
