@@ -23,28 +23,6 @@ public class ProcessOrder {
     }
 
 
-    /*@Async
-    public void processAndPersist(OrderEvent event) {
-
-        exchangeService.callExchange(event)
-                .thenAccept(exchangeResponse -> {
-                    log.info("Exchange response: {}", exchangeResponse);
-
-                    OrderHistoryEntity orderHistoryEntity =
-                            OrderListenerMapper.exchangeResponseToOrderHistoryEntity(event, exchangeResponse);
-                    log.info(" orderHistoryEntity: {}", orderHistoryEntity);
-                    orderHistoryRepository.save(
-                            orderHistoryEntity
-                    );
-
-                    log.info("Success DB Save for orderID: {}", event.getOrderId());
-                })
-                .exceptionally(ex -> {
-                    log.error("Error while processing order {}: {}", event.getOrderId(), ex.getMessage(), ex);
-                    return null;
-                });
-    }*/
-
     @Async("orderExecutor")
     public void processAndPersist(OrderEvent event) {
         exchangeService.callExchange(event)
