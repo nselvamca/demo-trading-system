@@ -15,9 +15,9 @@ public class AsyncConfig {
     @Bean(name = "orderExecutor")
     public Executor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(100);   // min threads
-        executor.setMaxPoolSize(500);    // max threads
-        executor.setQueueCapacity(1000);
+        executor.setCorePoolSize(30);   // min threads
+        executor.setMaxPoolSize(100);    // max threads
+        executor.setQueueCapacity(250);
         executor.setThreadNamePrefix("OrderAsync-");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
