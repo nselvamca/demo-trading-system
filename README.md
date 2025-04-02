@@ -1,9 +1,22 @@
 # Order Trading System : Demo - Only Happy Status Journey
 
 ## Application Goal
-To simulate an end-to-end order trading workflow using microservices event-driven architecture. The system accepts order placements, publishes them to Kafka, processes the response from a simulated exchange, and saves the order history in DynamoDB.
+**To simulate an end-to-end order trading workflow using microservices event-driven architecture.**  
+**The system accepts order placements, publishes them to Kafka, processes the response from a simulated exchange, and saves the order history in DynamoDB.**
 
 ---
+
+## Project Alignment
+
+| Requirement                         | Implementation in this Project                                                                                                        |
+|-------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| **Core Java, Multithreading, SOLID** | Used `CompletableFuture`, custom executors, proper separation of concerns, and SOLID-based component design.                          |
+| **Event-Driven Architecture**       | Integrated Kafka for producing and consuming trade events. Trade lifecycle is modeled using event transitions.                        |
+| **Reactive Design Principles**      | Non-blocking async processing using `CompletableFuture`                                                                               |
+| **DynamoDB (NoSQL)**                | To persist order lifecycle events asynchronously in a scalable, event-driven format.                                                  |
+| **DevOps & Agile Practices**        | JUnit for unit testing, clear separation of modules, and extensible for BDD with Cucumber.                                            |
+| **Cloud Awareness**                 | Design is cloud-deployable Microservices. Can be easily hosted on AWS/Azure using standard containerization or cloud-native services. |
+
 
 ##  Prerequisites
 
@@ -104,8 +117,8 @@ curl --location 'http://localhost:8081/orderservice/orders/placeorder' \
     "product": "MIS",
     "quantity": 60,
     "price": 77.0,
-    "tradingsymbol": "API",
-    "exchange": "NFO",
+    "tradingsymbol": "Apple",
+    "exchange": "NSE",
     "validity": "DAY",
     "transaction_type": "BUY",
     "order_type": "MARKET"
